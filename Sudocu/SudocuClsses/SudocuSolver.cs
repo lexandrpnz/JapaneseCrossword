@@ -82,7 +82,7 @@ namespace SudocuClsses
         /**
          * ¬ыполн€ем один проход по вертикали и горизонтали
          */
-        private bool _SolveIter( )
+        private bool _SolveIter()
         {
             _IsSucces = true;
             for (Byte i = 0; i < _SolvedSudocu.Size.Height; i++)

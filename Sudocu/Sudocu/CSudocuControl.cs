@@ -345,15 +345,20 @@ namespace Sudocu
             if (_Sudocu == null)
                 return;
 
-            if (e.Button == MouseButtons.Left)
+            try
             {
-                _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 1);
+                if (e.Button == MouseButtons.Left)
+                {
+                    _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 1);
+                }
+                if (e.Button == MouseButtons.Right)
+                {
+                    _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 0);
+                }
+                Refresh();
             }
-            if (e.Button == MouseButtons.Right)
-            {
-                _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 0);
-            }
-            Refresh();
+            catch (ArgumentOutOfRangeException)
+            { }
         }
 
 
@@ -362,16 +367,20 @@ namespace Sudocu
             if (_Sudocu == null)
                 return;
 
-            if (e.Button == MouseButtons.Left)
+            try
             {
-                _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 1);
+                if (e.Button == MouseButtons.Left)
+                {
+                    _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 1);
+                }
+                if (e.Button == MouseButtons.Right)
+                {
+                    _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 0);
+                }
                 Refresh();
             }
-            if (e.Button == MouseButtons.Right)
-            {
-                _Sudocu.SetCell(GetColumn(e.X), GetRow(e.Y), 0);
-                Refresh();
-            }
+            catch(ArgumentOutOfRangeException)
+            { }
         }
 
 

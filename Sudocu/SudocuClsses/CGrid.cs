@@ -49,7 +49,7 @@ namespace SudocuClsses
         public byte GetCell(byte cX, byte cY)
         {
             if ((Size.Width <= cX) || (Size.Height <= cY))
-                return 0xFF;
+                throw new ArgumentOutOfRangeException();
 
             return value[(Size.Width * cY) + cX];
         }
@@ -60,7 +60,7 @@ namespace SudocuClsses
         public void SetCell(byte cX, byte cY, byte cValue)
         {
             if ((Size.Width <= cX) || (Size.Height <= cY))
-                return;
+                throw new ArgumentOutOfRangeException();
             value[(Size.Width * cY) + cX] = cValue;
         }
 
