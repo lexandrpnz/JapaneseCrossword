@@ -184,7 +184,6 @@ namespace SudocuClsses
 
             for (Int32 j = 0; j < Row.Length; j++)
             {
-
                 if (100 == BanRow[j])
                 {
                     if (0 == BlockRow[j])
@@ -292,12 +291,25 @@ namespace SudocuClsses
 
         private Int64 _GetVar(Int32 ObjectCount, Int32 CellCount)
         {
-            return _FactorialEx(
+            try
+            {
+                return _GetVarCahe[ObjectCount][CellCount];
+            }
+            catch
+            {
+                if (!_GetVarCahe.ContainsKey(ObjectCount))
+                {
+                    _GetVarCahe.Add(ObjectCount, new Dictionary<Int32, Int64>());
+                }
+                _GetVarCahe[ObjectCount][CellCount] = _FactorialEx(
                 ObjectCount + CellCount, 
                 ObjectCount > CellCount ? ObjectCount : CellCount)
                 / _FactorialEx(
                 ObjectCount < CellCount ? ObjectCount : CellCount, 
                 1);
+            }
+
+            return _GetVarCahe[ObjectCount][CellCount];
         }
 
         private Int64 _FactorialEx(Int32 Begin,Int32 End)
@@ -338,6 +350,7 @@ namespace SudocuClsses
         private Boolean _IsSucces;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
+        private Dictionary<Int32, Dictionary<Int32, Int64>> _GetVarCahe = new Dictionary<Int32, Dictionary<Int32, Int64>>();
     }
 
 
