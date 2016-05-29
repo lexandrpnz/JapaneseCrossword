@@ -46,15 +46,21 @@ namespace SudocuClsses
         {
             try
             {
+                SudocuSolver Solver = (SudocuSolver)e.Argument;
+                Solver.Math = CachedMath.Load("MathCache.xml");
+
                 long tick = System.DateTime.Now.ToBinary();
                 int i = 0;
-                SudocuSolver Solver = (SudocuSolver)e.Argument;
                 while(!Solver._SolveIter())
                 {
                     i++;
                 }
+
                 tick = System.DateTime.Now.ToBinary() - tick;
                 DateTime Time = new System.DateTime(tick);
+                Solver.Math.SaveCache("MathCache.xml");
+
+
                 string smessage = "Кроссворд решен\n";
                 smessage += "Затрачено времени: ";
                 smessage += Time.ToString("HH:mm:ss:");
@@ -156,7 +162,7 @@ namespace SudocuClsses
         private void _Solvered(Byte[] Row, Byte[] Data)
         {
             Byte FreeCellSize = _CalcFreeCellSize((Byte)Row.Length, Data);
-            Int64 Var = _GetVar(Data.Length, FreeCellSize);
+            Int64 Var = Math.GetVar(Data.Length, FreeCellSize);
             Byte[] BlockRow = _CreateBlockedArray(Row.Length);
             Byte[] BanRow = _CreateBanArray(Row.Length);
 
@@ -250,7 +256,7 @@ namespace SudocuClsses
             {
                 return Positions;
             }
-            if (Var > _GetVar(ObjCount,FreeCellCount))
+            if (Var > Math.GetVar(ObjCount,FreeCellCount))
 	        {
 		        return Positions;
 	        }
@@ -261,9 +267,9 @@ namespace SudocuClsses
 	        {
 		        do 
 		        {
-			        if (tmpVar > _GetVar(ObjCount - i,FreeCellCount - Summposition))
+			        if (tmpVar > Math.GetVar(ObjCount - i,FreeCellCount - Summposition))
 			        {
-				        tmpVar -= _GetVar(ObjCount - i,FreeCellCount - Summposition);
+				        tmpVar -= Math.GetVar(ObjCount - i,FreeCellCount - Summposition);
 				        Positions[i-1]++;
 				        Summposition++;
 			        }
@@ -287,38 +293,6 @@ namespace SudocuClsses
                 FreeCellSize -= Data[i];
             }
             return FreeCellSize;
-        }
-
-        private Int64 _GetVar(Int32 ObjectCount, Int32 CellCount)
-        {
-            try
-            {
-                return _GetVarCahe[ObjectCount][CellCount];
-            }
-            catch
-            {
-                if (!_GetVarCahe.ContainsKey(ObjectCount))
-                {
-                    _GetVarCahe.Add(ObjectCount, new Dictionary<Int32, Int64>());
-                }
-                _GetVarCahe[ObjectCount][CellCount] = _FactorialEx(
-                ObjectCount + CellCount, 
-                ObjectCount > CellCount ? ObjectCount : CellCount)
-                / _FactorialEx(
-                ObjectCount < CellCount ? ObjectCount : CellCount, 
-                1);
-            }
-
-            return _GetVarCahe[ObjectCount][CellCount];
-        }
-
-        private Int64 _FactorialEx(Int32 Begin,Int32 End)
-        {
-            if (Begin > End)
-            {
-                return Begin * _FactorialEx(Begin - 1, End);
-            }
-            return 1;
         }
 
         private bool _IsSuccess(Byte[] Mask, Byte[] Value)
@@ -346,11 +320,12 @@ namespace SudocuClsses
             return true;
         }
 
+
         private CSudocu _SolvedSudocu = null;
         private Boolean _IsSucces;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
-        private Dictionary<Int32, Dictionary<Int32, Int64>> _GetVarCahe = new Dictionary<Int32, Dictionary<Int32, Int64>>();
+        private CachedMath Math = new CachedMath();
     }
 
 
