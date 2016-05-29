@@ -47,8 +47,6 @@ namespace SudocuClsses
             try
             {
                 SudocuSolver Solver = (SudocuSolver)e.Argument;
-                Solver.Math = CachedMath.Load("MathCache.xml");
-
                 long tick = System.DateTime.Now.ToBinary();
                 int i = 0;
                 while(!Solver._SolveIter())
@@ -58,7 +56,6 @@ namespace SudocuClsses
 
                 tick = System.DateTime.Now.ToBinary() - tick;
                 DateTime Time = new System.DateTime(tick);
-                Solver.Math.SaveCache("MathCache.xml");
 
 
                 string smessage = "Кроссворд решен\n";
