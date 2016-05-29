@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
-using System.ComponentModel;
+using System.Diagnostics;
 
 namespace SudocuClsses
 {
@@ -13,11 +12,12 @@ namespace SudocuClsses
     
     public class SudocuSolver
     {
-        public SudocuSolver()
-        {}
 
-        ~SudocuSolver()
-        { }
+        private CSudocu _SolvedSudocu = null;
+        private Boolean _IsSucces;
+        private bool[] _RowMap;
+        private bool[] _ColumnMap;
+        private CachedMath Math = new CachedMath();
 
         /**
          * Делегат вызывается при каждой новой итерации нахождения решения
@@ -30,33 +30,31 @@ namespace SudocuClsses
          */
         public void DoSolve(CSudocu Sudocu)
         {
+            Thread mainSolvethread = new Thread(_Solve);
             _SolvedSudocu = Sudocu;
-            BackgroundWorker bw = new BackgroundWorker();
             _RowMap = new bool[_SolvedSudocu.Size.Height];
             _ColumnMap = new bool[_SolvedSudocu.Size.Width];
-            bw.DoWork += _Solve;
-            bw.RunWorkerAsync(this);
+            mainSolvethread.Start();
         }
 
 
         /**
          * Основной метод нахождения правильного решения 
          */
-        private static void _Solve(object sender,DoWorkEventArgs e)
+        private void _Solve(object sender)
         {
             try
             {
-                SudocuSolver Solver = (SudocuSolver)e.Argument;
                 long tick = System.DateTime.Now.ToBinary();
                 int i = 0;
-                while(!Solver._SolveIter())
+                while(!_SolveIter())
                 {
                     i++;
                 }
 
                 tick = System.DateTime.Now.ToBinary() - tick;
                 DateTime Time = new System.DateTime(tick);
-
+ 
 
                 string smessage = "Кроссворд решен\n";
                 smessage += "Затрачено времени: ";
@@ -100,7 +98,7 @@ namespace SudocuClsses
 
             for (Byte i = 0; i < _SolvedSudocu.Size.Width; i++)
             {
-                if(!_ColumnMap[i])
+                if (!_ColumnMap[i])
                 {
                     _SolveColumn(i);
                     ProgressEvent.BeginInvoke(null, null);
@@ -245,8 +243,6 @@ namespace SudocuClsses
             return Variant;
         }
         
-
-
         private Byte _CalcFreeCellSize(Byte RowCount, Byte[] Data)
         {
             Byte FreeCellSize = (Byte)RowCount;
@@ -282,14 +278,5 @@ namespace SudocuClsses
             }
             return true;
         }
-
-
-        private CSudocu _SolvedSudocu = null;
-        private Boolean _IsSucces;
-        private bool[] _RowMap;
-        private bool[] _ColumnMap;
-        private CachedMath Math = new CachedMath();
     }
-
-
 }

@@ -32,7 +32,7 @@ namespace SudocuClsses
 
             Int64 tmpVar = Var;
             Byte Summposition = 0;
-            for (Byte i = 1; i < ObjCount; i++)
+            for (Byte i = 1; i < ObjCount; i++) 
             {
                 do
                 {
@@ -79,6 +79,8 @@ namespace SudocuClsses
         public XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>> _GetVarCache
         {get;set;}
 
+        private object _locObject = new object();
+
         public CachedMath()
         {
             _GetVarCache = new XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>>();
@@ -86,19 +88,22 @@ namespace SudocuClsses
 
         public override Int64 GetVar(Int32 ObjectCount, Int32 CellCount)
         {
-            try
+            lock(_locObject)
             {
+                try
+                {
+                    return _GetVarCache[ObjectCount][CellCount];
+                }
+                catch
+                {
+                    if (!_GetVarCache.ContainsKey(ObjectCount))
+                    {
+                        _GetVarCache.Add(ObjectCount, new XmlSerializableDictionary<Int32, Int64>());
+                    }
+                    _GetVarCache[ObjectCount][CellCount] = base.GetVar(ObjectCount, CellCount);
+                }
                 return _GetVarCache[ObjectCount][CellCount];
             }
-            catch
-            {
-                if (!_GetVarCache.ContainsKey(ObjectCount))
-                {
-                    _GetVarCache.Add(ObjectCount, new XmlSerializableDictionary<Int32, Int64>());
-                }
-                _GetVarCache[ObjectCount][CellCount] = base.GetVar(ObjectCount, CellCount);
-            }
-            return _GetVarCache[ObjectCount][CellCount];
         }
         public static CachedMath Load(String Path)
         {
