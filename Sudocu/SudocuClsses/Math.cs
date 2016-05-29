@@ -11,11 +11,49 @@ namespace SudocuClsses
     public abstract class IMath
     {
         public abstract Int64 GetVar(Int32 ObjectCount, Int32 CellCount);
+        public abstract Byte[] CalcPositions(Byte ObjCount, Byte FreeCellCount, Int64 Var);
     }
 
 
     public class Math: IMath
     {
+        public override Byte[] CalcPositions(Byte ObjCount, Byte FreeCellCount, Int64 Var)
+        {
+            Byte[] Positions = new Byte[ObjCount];
+
+            if (0 == Var)
+            {
+                return Positions;
+            }
+            if (Var > GetVar(ObjCount, FreeCellCount))
+            {
+                return Positions;
+            }
+
+            Int64 tmpVar = Var;
+            Byte Summposition = 0;
+            for (Byte i = 1; i < ObjCount; i++)
+            {
+                do
+                {
+                    if (tmpVar > GetVar(ObjCount - i, FreeCellCount - Summposition))
+                    {
+                        tmpVar -= GetVar(ObjCount - i, FreeCellCount - Summposition);
+                        Positions[i - 1]++;
+                        Summposition++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                } while (true);
+            }
+
+            Positions[ObjCount - 1] = (Byte)(tmpVar - 1);
+            return Positions;
+        }
+
+
         public override Int64 GetVar(Int32 ObjectCount, Int32 CellCount)
         {
             return _FactorialEx(
@@ -38,29 +76,29 @@ namespace SudocuClsses
      public class CachedMath : Math
      {
         [XmlElement]
-        public XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>> _GetVarCahe
+        public XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>> _GetVarCache
         {get;set;}
 
         public CachedMath()
         {
-            _GetVarCahe = new XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>>();
+            _GetVarCache = new XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>>();
         }
 
         public override Int64 GetVar(Int32 ObjectCount, Int32 CellCount)
         {
             try
             {
-                return _GetVarCahe[ObjectCount][CellCount];
+                return _GetVarCache[ObjectCount][CellCount];
             }
             catch
             {
-                if (!_GetVarCahe.ContainsKey(ObjectCount))
+                if (!_GetVarCache.ContainsKey(ObjectCount))
                 {
-                    _GetVarCahe.Add(ObjectCount, new XmlSerializableDictionary<Int32, Int64>());
+                    _GetVarCache.Add(ObjectCount, new XmlSerializableDictionary<Int32, Int64>());
                 }
-                _GetVarCahe[ObjectCount][CellCount] = base.GetVar(ObjectCount, CellCount);
+                _GetVarCache[ObjectCount][CellCount] = base.GetVar(ObjectCount, CellCount);
             }
-            return _GetVarCahe[ObjectCount][CellCount];
+            return _GetVarCache[ObjectCount][CellCount];
         }
         public static CachedMath Load(String Path)
         {

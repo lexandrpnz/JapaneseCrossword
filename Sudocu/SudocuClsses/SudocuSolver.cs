@@ -168,7 +168,7 @@ namespace SudocuClsses
 
             for (Int64 i = 1; i <= Var; i++)
             {
-                Byte[] Positions = _CalcPositions((Byte)Data.Length, FreeCellSize, i);
+                Byte[] Positions = Math.CalcPositions((Byte)Data.Length, FreeCellSize, i);
                 Byte[] IterRow = _CreateVariant(Positions,Data,(Byte)Row.Length);
 
                 if(!_IsSuccess(Row, IterRow))
@@ -248,41 +248,7 @@ namespace SudocuClsses
             return Variant;
         }
         
-        private Byte[] _CalcPositions(Byte ObjCount, Byte FreeCellCount, Int64 Var)
-        {
-	        Byte[] Positions = new Byte[ObjCount];
 
-            if (0 == Var)
-            {
-                return Positions;
-            }
-            if (Var > Math.GetVar(ObjCount,FreeCellCount))
-	        {
-		        return Positions;
-	        }
-
-            Int64 tmpVar = Var;
-            Byte Summposition = 0;
-	        for (Byte i = 1; i < ObjCount;i++)
-	        {
-		        do 
-		        {
-			        if (tmpVar > Math.GetVar(ObjCount - i,FreeCellCount - Summposition))
-			        {
-				        tmpVar -= Math.GetVar(ObjCount - i,FreeCellCount - Summposition);
-				        Positions[i-1]++;
-				        Summposition++;
-			        }
-			        else
-			        {
-				        break;
-			        }
-		        } while (true);
-	        }
-
-	        Positions[ObjCount-1] = (Byte)(tmpVar -1);
-            return Positions;
-        }
 
         private Byte _CalcFreeCellSize(Byte RowCount, Byte[] Data)
         {
