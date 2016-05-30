@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace SudocuClsses
 {
     /**
-     *  ласс предназначен дл€ автоматизации решени€ судоку
+     *  ласс предназначен дл€ автоматизации решени€ €понского сканворда
      */
     
     public class SudocuSolver
@@ -24,7 +24,7 @@ namespace SudocuClsses
         public event UpdateProgressEvent ProgressEvent;
 
         /**
-         * –ешить судоку создает нить в которой собственно выполн€етс€ решение
+         * –ешить сканворд создает нить в которой собственно выполн€етс€ решение
          */
         public void DoSolve(CSudocu Sudocu)
         {
