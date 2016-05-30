@@ -84,24 +84,50 @@ namespace SudocuClsses
         private bool _SolveIter()
         {
             bool isChanged = false;
-            for (Byte i = 0; i < _SolvedSudocu.Size.Height; i++)
+            Thread[] rowThreads = new Thread[5];
+            for (Byte i = 0; i < rowThreads.Length; i++)
             {
-                if (!_RowMap[i])
+                rowThreads[i] = new Thread(delegate(object threadIndex) 
                 {
-                    isChanged |= _SolveRow(i);
-                    _RowMap[i] = true;
-                    ProgressEvent.BeginInvoke(null, null);
-                }
+                    for (int j = (byte)threadIndex; j < _SolvedSudocu.Size.Height; j += rowThreads.Length)
+                    {
+                        if (!_RowMap[j])
+                        {
+                            isChanged |= _SolveRow((byte)j);
+                            _RowMap[j] = true;
+                            ProgressEvent.BeginInvoke(null, null);
+                        }
+                    }
+                });
+                rowThreads[i].Start(i);
             }
 
-            for (Byte i = 0; i < _SolvedSudocu.Size.Width; i++)
+            for (Byte i = 0; i < rowThreads.Length; i++)
             {
-                if (!_ColumnMap[i])
+                rowThreads[i].Join();
+            }
+
+            Thread[] collThreads = new Thread[5];
+            for (Byte i = 0; i < collThreads.Length; i++)
+            {
+                collThreads[i] = new Thread(delegate(object threadIndex)
                 {
-                    isChanged |= _SolveColumn(i);
-                    ProgressEvent.BeginInvoke(null, null);
-                    _ColumnMap[i] = true;
-                }
+                    int count = System.Math.Min(((byte)threadIndex + 1) * 10, _SolvedSudocu.Size.Width);
+                    for (int j = (byte)threadIndex; j < _SolvedSudocu.Size.Width; j += collThreads.Length)
+                    {
+                        if (!_ColumnMap[j])
+                        {
+                            isChanged |= _SolveColumn((byte)j);
+                            _ColumnMap[j] = true;
+                            ProgressEvent.BeginInvoke(null, null);
+                        }
+                    }
+                });
+                collThreads[i].Start(i);
+            }
+            for (Byte i = 0; i < collThreads.Length; i++)
+            {
+                collThreads[i].Join();
             }
 
             return !isChanged; 
