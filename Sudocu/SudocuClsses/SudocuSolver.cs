@@ -12,9 +12,7 @@ namespace SudocuClsses
     
     public class SudocuSolver
     {
-
         private CSudocu _SolvedSudocu = null;
-        private Boolean _IsSucces;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
         private CachedMath Math = new CachedMath();
@@ -85,12 +83,12 @@ namespace SudocuClsses
          */
         private bool _SolveIter()
         {
-            _IsSucces = true;
+            bool isChanged = false;
             for (Byte i = 0; i < _SolvedSudocu.Size.Height; i++)
             {
                 if (!_RowMap[i])
                 {
-                    _SolveRow(i);
+                    isChanged |= _SolveRow(i);
                     _RowMap[i] = true;
                     ProgressEvent.BeginInvoke(null, null);
                 }
@@ -100,16 +98,16 @@ namespace SudocuClsses
             {
                 if (!_ColumnMap[i])
                 {
-                    _SolveColumn(i);
+                    isChanged |= _SolveColumn(i);
                     ProgressEvent.BeginInvoke(null, null);
                     _ColumnMap[i] = true;
                 }
             }
 
-            return _IsSucces; 
+            return !isChanged; 
         }
 
-        private void _SolveRow(Byte Index)
+        private bool _SolveRow(Byte Index)
         {
             Byte[] row = new Byte[_SolvedSudocu.Size.Width];
 
@@ -118,7 +116,7 @@ namespace SudocuClsses
                 row[i] = _SolvedSudocu.GetCell(i, Index);
             }
 
-            _Solvered(row, _SolvedSudocu.Vertical[Index].list);
+            bool isChange = _Solvered(row, _SolvedSudocu.Vertical[Index].list);
 
             for (Byte i = 0; i < _SolvedSudocu.Size.Width; i++)
             {
@@ -128,9 +126,10 @@ namespace SudocuClsses
                     _SolvedSudocu.SetCell(i, Index, row[i]);
                 }
             }
+            return isChange;
         }
 
-        private void _SolveColumn(Byte Index)
+        private bool _SolveColumn(Byte Index)
         {
             Byte[] row = new Byte[_SolvedSudocu.Size.Height];
 
@@ -139,7 +138,7 @@ namespace SudocuClsses
                 row[i] = _SolvedSudocu.GetCell(Index, i);
             }
 
-            _Solvered(row, _SolvedSudocu.Horizontal[Index].list);
+            bool isChange = _Solvered(row, _SolvedSudocu.Horizontal[Index].list);
 
             for (Byte i = 0; i < _SolvedSudocu.Size.Height; i++)
             {
@@ -149,12 +148,13 @@ namespace SudocuClsses
                     _SolvedSudocu.SetCell(Index, i, row[i]);
                 }
             }
+            return isChange;
         }
 
         //
         // TODO Разбить на более мелкие функции
         // 
-        private void _Solvered(Byte[] Row, Byte[] Data)
+        private bool _Solvered(Byte[] Row, Byte[] Data)
         {
             Byte FreeCellSize = _CalcFreeCellSize((Byte)Row.Length, Data);
             Int64 Var = Math.GetVar(Data.Length, FreeCellSize);
@@ -183,6 +183,7 @@ namespace SudocuClsses
                 }
             }
 
+            bool isChannge = false;
             for (Int32 j = 0; j < Row.Length; j++)
             {
                 if (100 == BanRow[j])
@@ -195,12 +196,12 @@ namespace SudocuClsses
 
                 if (BlockRow[j] != Row[j])
                 {
-                    _IsSucces = false;
+                    isChannge = true;
                 }
             }
             
             BlockRow.CopyTo(Row,0);
-            return;
+            return isChannge;
         }
 
         private Byte[] _CreateBlockedArray(Int64 Count)
