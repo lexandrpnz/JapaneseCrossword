@@ -209,7 +209,7 @@ namespace SudocuClsses
                 }
             }
 
-            bool isChannge = false;
+            bool isChange = false;
             for (Int32 j = 0; j < Row.Length; j++)
             {
                 if (100 == BanRow[j])
@@ -222,12 +222,12 @@ namespace SudocuClsses
 
                 if (BlockRow[j] != Row[j])
                 {
-                    isChannge = true;
+                    isChange = true;
                 }
             }
             
             BlockRow.CopyTo(Row,0);
-            return isChannge;
+            return isChange;
         }
 
         private Byte[] _CreateBlockedArray(Int64 Count)
