@@ -85,6 +85,18 @@ namespace SudocuClsses
             }
         }
 
+        public Byte this[byte nX, byte nY]
+        {
+            get
+            {
+                return GetCell(nX, nY);
+            }
+            set
+            {
+                SetCell(nX, nY, value);
+            }
+        }
+
         private Size	m_Size;
  	    private Byte[]	m_pGrid;
         private Object _Locked = new Object();
