@@ -27,7 +27,7 @@ namespace JapaneseСrossword
             // Метод данного делегата не может быть статическим
             // (если я все правильно понимаю)
             // 
-            ISolver Solver = new CrosswordSolver();
+            ISolver Solver = new SolverWithStateMachine();
             Solver.ProgressEvent += RefreshProgress;
             Solver.DoSolve(_Sudocu);
         }
