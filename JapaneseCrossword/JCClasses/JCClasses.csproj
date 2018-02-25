@@ -52,6 +52,7 @@
     <Compile Include="NumericalMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CrosswordSolver.cs" />
+    <Compile Include="SolverBase.cs" />
     <Compile Include="XmlSerializableDictionary.cs" />
     <Compile Include="Crossword.cs" />
   </ItemGroup>
