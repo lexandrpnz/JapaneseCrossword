@@ -8,9 +8,9 @@ namespace JCClasses
     /**
      *  ласс предназначен дл€ автоматизации решени€ €понского сканворда
      */
-    public class SudocuSolver
+    public class CrosswordSolver
     {
-        private CSudocu _SolvedSudocu = null;
+        private Crossword _SolvedSudocu = null;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
         private int threadCount = 5;
@@ -26,7 +26,7 @@ namespace JCClasses
         /**
          * –ешить сканворд создает нить в которой собственно выполн€етс€ решение
          */
-        public void DoSolve(CSudocu Sudocu)
+        public void DoSolve(Crossword Sudocu)
         {
             Thread mainSolvethread = new Thread(_Solve);
             _SolvedSudocu = Sudocu;

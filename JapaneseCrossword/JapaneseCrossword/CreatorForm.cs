@@ -39,7 +39,7 @@ namespace JapaneseСrossword
             if (DialogResult.OK == saveFileDialog.ShowDialog(this))
             {
                 // Формируем объект для сохранения
-                CSudocu newSudocu = new CSudocu();
+                Crossword newSudocu = new Crossword();
                 newSudocu.SetSize((byte)numWidth.Value, (byte)numHeigth.Value);
 
                 Byte RowIndex = 0;
@@ -85,7 +85,7 @@ namespace JapaneseСrossword
             openFileDialog .Filter = "(*.xml)|*.xml";
             if (DialogResult.OK == openFileDialog.ShowDialog(this))
             {
-                CSudocu newSudocu = CSudocu.Load(openFileDialog.FileName);
+                Crossword newSudocu = Crossword.Load(openFileDialog.FileName);
 
                 numHeigth.Value = newSudocu.Size.Height;
                 numWidth.Value = newSudocu.Size.Width;

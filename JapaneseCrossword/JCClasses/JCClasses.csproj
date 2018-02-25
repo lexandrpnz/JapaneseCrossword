@@ -50,9 +50,9 @@
     <Compile Include="Math.cs" />
     <Compile Include="NumericalMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudocuSolver.cs" />
+    <Compile Include="CrosswordSolver.cs" />
     <Compile Include="XmlSerializableDictionary.cs" />
-    <Compile Include="СSudocu.cs" />
+    <Compile Include="Crossword.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

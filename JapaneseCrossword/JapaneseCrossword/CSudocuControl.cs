@@ -13,7 +13,7 @@ namespace JapaneseСrossword
         {
             InitializeComponent();
             _UpdateSudocuEvent = new UpdateSudocuEvent(_UpdateSudocu);
-            _Sudocu = new CSudocu();
+            _Sudocu = new Crossword();
             _Sudocu.SetSize(10,20);
         }
 
@@ -27,7 +27,7 @@ namespace JapaneseСrossword
             // Метод данного делегата не может быть статическим
             // (если я все правильно понимаю)
             // 
-            SudocuSolver Solver = new SudocuSolver();
+            CrosswordSolver Solver = new CrosswordSolver();
             Solver.ProgressEvent += RefreshProgress;
             Solver.DoSolve(_Sudocu);
         }
@@ -61,7 +61,7 @@ namespace JapaneseСrossword
         //-----------------------------------------------------------------
         public void LoadSudocu(String Path)
         {
-            _Sudocu = CSudocu.Load(Path);
+            _Sudocu = Crossword.Load(Path);
             DoSolve();
         }
 
@@ -371,7 +371,7 @@ namespace JapaneseСrossword
         }
 
 
-        private CSudocu _Sudocu = null;
+        private Crossword _Sudocu = null;
         private byte _CellSize = 15;
         private byte _SeparatorSize = 10;
         const byte _BoxSize = 5;

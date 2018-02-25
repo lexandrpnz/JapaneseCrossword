@@ -13,12 +13,12 @@ namespace JCClasses
      */
     [Serializable()]
     [XmlRoot("Sudocu")]
-    public class CSudocu: CGrid
+    public class Crossword: CGrid
     {
-        public CSudocu()
+        public Crossword()
         { }
 
-        ~CSudocu()
+        ~Crossword()
         { }
 
         /**
@@ -73,12 +73,12 @@ namespace JCClasses
         }
 
 
-        public static CSudocu Load(String filePath)
+        public static Crossword Load(String filePath)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(CSudocu));
+            XmlSerializer serializer = new XmlSerializer(typeof(Crossword));
             Stream stream = new FileStream(filePath, FileMode.Open);
 
-            CSudocu Sudocu = (CSudocu)serializer.Deserialize(stream);
+            Crossword Sudocu = (Crossword)serializer.Deserialize(stream);
             stream.Close();
             return Sudocu;
         }
@@ -88,7 +88,7 @@ namespace JCClasses
         {
             lock (lockObj)
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(CSudocu));
+                XmlSerializer Serializer = new XmlSerializer(typeof(Crossword));
                 Stream stream = new FileStream(Path, FileMode.Create);
 
                 Serializer.Serialize(stream, this, new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty) }));
