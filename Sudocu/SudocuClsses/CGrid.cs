@@ -28,14 +28,14 @@ namespace SudocuClsses
         {
             get
             {
-                lock (_Locked)
+                lock (lockeObj)
                 {
                     return m_Size;
                 }
             }
             set
             {
-                lock (_Locked)
+                lock (lockeObj)
                 {
                     m_Size = value;
                     m_pGrid = new Byte[m_Size.Width * m_Size.Height];
@@ -44,24 +44,24 @@ namespace SudocuClsses
         }
 
         /**
-         * Получить значение ячейки с координатами cX и cY
+         * Получить значение ячейки с координатами x и cY
          */
-        public byte GetCell(byte cX, byte cY)
+        public byte GetCell(byte x, byte y)
         {
-            if ((Size.Width <= cX) || (Size.Height <= cY))
+            if ((Size.Width <= x) || (Size.Height <= y))
                 throw new ArgumentOutOfRangeException();
 
-            return value[(Size.Width * cY) + cX];
+            return value[(Size.Width * y) + x];
         }
 
         /**
-         * Задать значение ячейки с координатами cX и cY
+         * Задать значение ячейки с координатами x и cY
          */
-        public void SetCell(byte cX, byte cY, byte cValue)
+        public void SetCell(byte x, byte y, byte value)
         {
-            if ((Size.Width <= cX) || (Size.Height <= cY))
+            if ((Size.Width <= x) || (Size.Height <= y))
                 throw new ArgumentOutOfRangeException();
-            value[(Size.Width * cY) + cX] = cValue;
+            this.value[(Size.Width * y) + x] = value;
         }
 
         /**
@@ -71,14 +71,14 @@ namespace SudocuClsses
         {
             get
             {
-                lock (_Locked)
+                lock (lockeObj)
                 {
                     return m_pGrid; 
                 }
             }
             set
             {
-                lock (_Locked)
+                lock (lockeObj)
                 {
                     m_pGrid = value;
                 }
@@ -99,6 +99,6 @@ namespace SudocuClsses
 
         private Size	m_Size;
  	    private Byte[]	m_pGrid;
-        private Object _Locked = new Object();
+        private Object lockeObj = new Object();
     }
 }

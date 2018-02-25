@@ -30,9 +30,9 @@ namespace SudocuClsses
         {
             get
             {
-                lock (_Locked)
+                lock (locket)
                 {
-                    return m_VerticalMatrix;
+                    return verticalMatrix;
                 }
             }
             //set{ m_VerticalMatrix = value; }
@@ -45,9 +45,9 @@ namespace SudocuClsses
         {
             get
             {
-                lock (_Locked)
+                lock (locket)
                 {
-                    return _HorizontalMatrix;
+                    return horizontalMatrix;
                 }
             }
             //set{ m_HorizontalMatrix = value; }
@@ -58,19 +58,19 @@ namespace SudocuClsses
          */
         public void SetSize(byte Width,byte Height)
         {
-            lock (_Locked)
+            lock (locket)
             {
                 this.Size = new Size(Width, Height);
-                m_VerticalMatrix.Clear();
+                verticalMatrix.Clear();
                 byte i;
                 for (i = 0; i < Height; i++)
                 {
-                    m_VerticalMatrix.Add(new ByteList());
+                    verticalMatrix.Add(new ByteList());
                 }
-                _HorizontalMatrix.Clear();
+                horizontalMatrix.Clear();
                 for (i = 0; i < Width; i++)
                 {
-                    _HorizontalMatrix.Add(new ByteList());
+                    horizontalMatrix.Add(new ByteList());
                 }
             }
         }
@@ -78,15 +78,15 @@ namespace SudocuClsses
 
         public void Load(String Path)
         {
-            lock (_Locked)
+            lock (locket)
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(CSudocu));
                 Stream stream = new FileStream(Path, FileMode.Open);
 
                 CSudocu Sudocu = (CSudocu)serializer.Deserialize(stream);
                 Size = Sudocu.Size;
-                _HorizontalMatrix = Sudocu.Horizontal;
-                m_VerticalMatrix = Sudocu.Vertical;
+                horizontalMatrix = Sudocu.Horizontal;
+                verticalMatrix = Sudocu.Vertical;
                 value = Sudocu.value;
 
                 stream.Close();
@@ -96,7 +96,7 @@ namespace SudocuClsses
 
         public void Save(String Path)
         {
-            lock (_Locked)
+            lock (locket)
             {
                 XmlSerializer Serializer = new XmlSerializer(typeof(CSudocu));
                 Stream stream = new FileStream(Path, FileMode.Create);
@@ -107,8 +107,8 @@ namespace SudocuClsses
         }
 
 
-        private NumericalMatrix m_VerticalMatrix = new NumericalMatrix();
-        private NumericalMatrix _HorizontalMatrix = new NumericalMatrix();
-        private Object _Locked = new Object();
+        private NumericalMatrix verticalMatrix = new NumericalMatrix();
+        private NumericalMatrix horizontalMatrix = new NumericalMatrix();
+        private Object locket = new Object();
     }
 }
