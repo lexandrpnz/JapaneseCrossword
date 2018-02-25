@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ByteList.cs" />
     <Compile Include="CGrid.cs" />
+    <Compile Include="ISolver.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="NumericalMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

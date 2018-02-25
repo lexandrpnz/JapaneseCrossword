@@ -6,9 +6,9 @@ using System.Windows.Forms;
 namespace JCClasses
 {
     /**
-     *  ласс предназначен дл€ автоматизации решени€ €понского сканворда
+     *  ласс предназначен дл€ автоматизации решени€ €понского кроссворда
      */
-    public class CrosswordSolver
+    public class CrosswordSolver: ISolver
     {
         private Crossword _SolvedSudocu = null;
         private bool[] _RowMap;
@@ -16,16 +16,9 @@ namespace JCClasses
         private int threadCount = 5;
         private IMath Math = new CachedMath();
 
-
-        /**
-         * ƒелегат вызываетс€ при каждой новой итерации нахождени€ решени€
-         */
-        public delegate void UpdateProgressEvent();
         public event UpdateProgressEvent ProgressEvent;
 
-        /**
-         * –ешить сканворд создает нить в которой собственно выполн€етс€ решение
-         */
+
         public void DoSolve(Crossword Sudocu)
         {
             Thread mainSolvethread = new Thread(_Solve);
