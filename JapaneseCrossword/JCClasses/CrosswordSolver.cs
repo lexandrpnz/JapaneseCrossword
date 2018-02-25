@@ -21,7 +21,7 @@ namespace JCClasses
 
         public void DoSolve(Crossword Sudocu)
         {
-            Thread mainSolvethread = new Thread(_Solve);
+            Thread mainSolvethread = new Thread(Solve);
             _SolvedSudocu = Sudocu;
             _RowMap = new bool[_SolvedSudocu.Size.Height];
             _ColumnMap = new bool[_SolvedSudocu.Size.Width];
@@ -32,27 +32,24 @@ namespace JCClasses
         /**
          * Основной метод нахождения правильного решения 
          */
-        private void _Solve(object sender)
+        private void Solve(object sender)
         {
             try
             {
                 long tick = System.DateTime.Now.ToBinary();
                 int i = 0;
-                while(!_SolveIter())
+                while(!SolveIter())
                 {
                     i++;
                 }
 
                 tick = System.DateTime.Now.ToBinary() - tick;
-                DateTime Time = new System.DateTime(tick);
+                DateTime time = new System.DateTime(tick);
 
-                string smessage = "Кроссворд решен\n";
-                smessage += "Затрачено времени: ";
-                smessage += Time.ToString("HH:mm:ss:");
-                smessage += Time.Millisecond.ToString();
-                smessage += "\n";
-                smessage += "Количество полных проходов по исходным данным";
-                smessage += i.ToString();
+                string smessage =
+                    string.Format("Кроссворд решен\nЗатрачено времени: {0}\nКоличество полных проходов по исходным данным: {1}",
+                    time.ToString("HH:mm:ss"),
+                    i.ToString());
 
                 MessageBox.Show(
                                  smessage,
@@ -73,7 +70,7 @@ namespace JCClasses
         /**
          * Выполняем один проход по вертикали и горизонтали
          */
-        private bool _SolveIter()
+        private bool SolveIter()
         {
             bool isChanged = false;
             Task[] rowThreads = new Task[threadCount];
@@ -86,7 +83,7 @@ namespace JCClasses
                     {
                         if (!_RowMap[j])
                         {
-                            bool res = _SolveRow((byte)j);
+                            bool res = SolveRow((byte)j);
                             lock(lockObj)
                             {
                                 isChanged |= res;
@@ -109,7 +106,7 @@ namespace JCClasses
                     {
                         if (!_ColumnMap[j])
                         {
-                            bool res = _SolveColumn((byte)j);
+                            bool res = SolveColumn((byte)j);
                             lock (lockObj)
                             {
                                 isChanged |= res;
@@ -124,7 +121,7 @@ namespace JCClasses
             return !isChanged; 
         }
 
-        private bool _SolveRow(Byte Index)
+        private bool SolveRow(Byte Index)
         {
             Byte[] row = new Byte[_SolvedSudocu.Size.Width];
 
@@ -133,7 +130,7 @@ namespace JCClasses
                 row[i] = _SolvedSudocu.GetCell(i, Index);
             }
 
-            bool isChange = _Solvered(row, _SolvedSudocu.Vertical[Index].list);
+            bool isChange = Solvered(row, _SolvedSudocu.Vertical[Index].list);
 
             for (Byte i = 0; i < _SolvedSudocu.Size.Width; i++)
             {
@@ -146,7 +143,7 @@ namespace JCClasses
             return isChange;
         }
 
-        private bool _SolveColumn(Byte Index)
+        private bool SolveColumn(Byte Index)
         {
             Byte[] row = new Byte[_SolvedSudocu.Size.Height];
 
@@ -155,7 +152,7 @@ namespace JCClasses
                 row[i] = _SolvedSudocu.GetCell(Index, i);
             }
 
-            bool isChange = _Solvered(row, _SolvedSudocu.Horizontal[Index].list);
+            bool isChange = Solvered(row, _SolvedSudocu.Horizontal[Index].list);
 
             for (Byte i = 0; i < _SolvedSudocu.Size.Height; i++)
             {
@@ -171,19 +168,19 @@ namespace JCClasses
         //
         // TODO Разбить на более мелкие функции
         // 
-        private bool _Solvered(Byte[] Row, Byte[] Data)
+        private bool Solvered(Byte[] Row, Byte[] Data)
         {
-            Byte FreeCellSize = _CalcFreeCellSize((Byte)Row.Length, Data);
+            Byte FreeCellSize = CalcFreeCellSize((Byte)Row.Length, Data);
             Int64 Var = Math.GetVar(Data.Length, FreeCellSize);
-            Byte[] BlockRow = _CreateBlockedArray(Row.Length);
-            Byte[] BanRow = _CreateBanArray(Row.Length);
+            Byte[] BlockRow = CreateBlockedArray(Row.Length);
+            Byte[] BanRow = CreateBanArray(Row.Length);
 
             for (Int64 i = 1; i <= Var; i++)
             {
                 Byte[] Positions = Math.CalcPositions((Byte)Data.Length, FreeCellSize, i);
-                Byte[] IterRow = _CreateVariant(Positions,Data,(Byte)Row.Length);
+                Byte[] IterRow = CreateVariant(Positions,Data,(Byte)Row.Length);
 
-                if(!_IsSuccess(Row, IterRow))
+                if(!IsSuccess(Row, IterRow))
                 {
                     continue;
                 }
@@ -221,7 +218,7 @@ namespace JCClasses
             return isChange;
         }
 
-        private Byte[] _CreateBlockedArray(Int64 Count)
+        private Byte[] CreateBlockedArray(Int64 Count)
         {
             Byte[] NewRow = new Byte[Count];
 
@@ -232,7 +229,7 @@ namespace JCClasses
             return NewRow;
         }
 
-        private Byte[] _CreateBanArray(Int64 Count)
+        private Byte[] CreateBanArray(Int64 Count)
         {
             Byte[] NewRow = new Byte[Count];
 
@@ -243,7 +240,7 @@ namespace JCClasses
             return NewRow;
         }
 
-        private Byte[] _CreateVariant(Byte[] Positions, Byte[] Data, Byte Length)
+        private Byte[] CreateVariant(Byte[] Positions, Byte[] Data, Byte Length)
         {
             Byte[] Variant = new Byte[Length];
             Byte Position = 0;
@@ -261,7 +258,7 @@ namespace JCClasses
             return Variant;
         }
         
-        private Byte _CalcFreeCellSize(Byte RowCount, Byte[] Data)
+        private Byte CalcFreeCellSize(Byte RowCount, Byte[] Data)
         {
             Byte FreeCellSize = (Byte)RowCount;
             FreeCellSize -= (Byte)(Data.Length - 1);
@@ -272,7 +269,7 @@ namespace JCClasses
             return FreeCellSize;
         }
 
-        private bool _IsSuccess(Byte[] Mask, Byte[] Value)
+        private bool IsSuccess(Byte[] Mask, Byte[] Value)
         {
             for (Int32 j = 0; j < Mask.Length; j++)
             {
