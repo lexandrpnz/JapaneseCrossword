@@ -12,7 +12,7 @@ namespace SudocuClsses
         private CSudocu _SolvedSudocu = null;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
-        private CachedMath Math = new CachedMath();
+        private IMath Math = new Math();
 
         /**
          * Делегат вызывается при каждой новой итерации нахождения решения

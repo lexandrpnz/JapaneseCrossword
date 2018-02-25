@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using SudocuClsses;
+using System;
+using System.Data;
+using System.Windows.Forms;
 
 namespace Sudocu
 {
@@ -36,7 +32,6 @@ namespace Sudocu
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
             // Сохраняем
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -90,8 +85,7 @@ namespace Sudocu
             openFileDialog .Filter = "(*.xml)|*.xml";
             if (DialogResult.OK == openFileDialog.ShowDialog(this))
             {
-                CSudocu newSudocu = new CSudocu();
-                newSudocu.Load(openFileDialog.FileName);
+                CSudocu newSudocu = CSudocu.Load(openFileDialog.FileName);
 
                 numHeigth.Value = newSudocu.Size.Height;
                 numWidth.Value = newSudocu.Size.Width;

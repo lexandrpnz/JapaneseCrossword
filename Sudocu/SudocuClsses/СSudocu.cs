@@ -60,13 +60,12 @@ namespace SudocuClsses
             {
                 this.Size = new Size(Width, Height);
                 verticalMatrix.Clear();
-                byte i;
-                for (i = 0; i < Height; i++)
+                for (byte i = 0; i < Height; i++)
                 {
                     verticalMatrix.Add(new ByteList());
                 }
                 horizontalMatrix.Clear();
-                for (i = 0; i < Width; i++)
+                for (byte i = 0; i < Width; i++)
                 {
                     horizontalMatrix.Add(new ByteList());
                 }
@@ -74,21 +73,14 @@ namespace SudocuClsses
         }
 
 
-        public void Load(String Path)
+        public static CSudocu Load(String filePath)
         {
-            lock (locket)
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(CSudocu));
-                Stream stream = new FileStream(Path, FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(typeof(CSudocu));
+            Stream stream = new FileStream(filePath, FileMode.Open);
 
-                CSudocu Sudocu = (CSudocu)serializer.Deserialize(stream);
-                Size = Sudocu.Size;
-                horizontalMatrix = Sudocu.Horizontal;
-                verticalMatrix = Sudocu.Vertical;
-                value = Sudocu.value;
-
-                stream.Close();
-            }
+            CSudocu Sudocu = (CSudocu)serializer.Deserialize(stream);
+            stream.Close();
+            return Sudocu;
         }
 
 

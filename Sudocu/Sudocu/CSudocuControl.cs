@@ -1,17 +1,8 @@
+using SudocuClsses;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using SudocuClsses;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using System.Collections;
-using System.Threading;
 
 namespace Sudocu
 {
@@ -24,7 +15,6 @@ namespace Sudocu
             _UpdateSudocuEvent = new UpdateSudocuEvent(_UpdateSudocu);
             _Sudocu = new CSudocu();
             _Sudocu.SetSize(10,20);
-            //LoadSudocu("sd.xml");
         }
 
         //-----------------------------------------------------------------
@@ -62,7 +52,6 @@ namespace Sudocu
          * перерисовка контрола будет выполняться в основном потоке, а не в том
          * в котором была вызвана функция
          * (типа посылаем сообщение окну что ему нужно перерисоваться)
-         * Метод не может быть статическим, так как относится к текущему объекту
          */
         private void RefreshProgress()
         {
@@ -74,7 +63,7 @@ namespace Sudocu
 
         public void LoadSudocu(String Path)
         {
-            _Sudocu.Load(Path);
+            _Sudocu = CSudocu.Load(Path);
             DoSolve();
         }
 
