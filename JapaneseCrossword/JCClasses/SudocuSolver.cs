@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SudocuClsses
+namespace JCClasses
 {
     /**
      *  ласс предназначен дл€ автоматизации решени€ €понского сканворда

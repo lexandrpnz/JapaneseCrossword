@@ -1,9 +1,9 @@
-using SudocuClsses;
+using JCClasses;
 using System;
 using System.Data;
 using System.Windows.Forms;
 
-namespace Sudocu
+namespace Japanese—rossword
 {
     public partial class CreatorForm : Form
     {

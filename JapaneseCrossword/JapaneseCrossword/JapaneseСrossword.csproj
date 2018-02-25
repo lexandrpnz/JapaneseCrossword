@@ -8,8 +8,8 @@
     <ProjectGuid>{E65B7B6F-2405-4C66-9EE1-13C5ACE7ECA0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sudocu</RootNamespace>
-    <AssemblyName>Sudocu</AssemblyName>
+    <RootNamespace>JapaneseСrossword</RootNamespace>
+    <AssemblyName>JapaneseСrossword</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

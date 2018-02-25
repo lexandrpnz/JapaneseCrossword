@@ -1,4 +1,4 @@
-namespace Sudocu
+namespace Japanese—rossword
 {
     partial class CreatorForm
     {

@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 
-namespace SudocuClsses
+namespace JCClasses
 {
     /**
      * Класс описывает японский сканворд

@@ -1,4 +1,4 @@
-﻿namespace Sudocu
+﻿namespace JapaneseСrossword
 {
     partial class SudocuForm
     {
@@ -33,7 +33,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this._sudocuControl = new Sudocu.CSudocuControl();
+            this._sudocuControl = new JapaneseСrossword.CSudocuControl();
             this.SuspendLayout();
             // 
             // _sudocuControl

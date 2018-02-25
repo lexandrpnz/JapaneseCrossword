@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Xml.Serialization;
 
-namespace SudocuClsses
+namespace JCClasses
 {
     /**
      * Класс описывает игрове поле сканворда 

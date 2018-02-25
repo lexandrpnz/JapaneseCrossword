@@ -5,12 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using SudocuClsses;
+using JCClasses;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace Sudocu
+namespace JapaneseСrossword
 {
     public partial class SudocuForm : Form
     {
