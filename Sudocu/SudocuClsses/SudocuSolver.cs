@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SudocuClsses
@@ -12,8 +13,8 @@ namespace SudocuClsses
         private CSudocu _SolvedSudocu = null;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
-        private int threadCount = 1;
-        private IMath Math = new Math();
+        private int threadCount = 5;
+        private IMath Math = new CachedMath();
 
 
         /**
@@ -82,52 +83,51 @@ namespace SudocuClsses
         private bool _SolveIter()
         {
             bool isChanged = false;
-            Thread[] rowThreads = new Thread[threadCount];
+            Task[] rowThreads = new Task[threadCount];
+            object lockObj = new object();
             for (Byte i = 0; i < rowThreads.Length; i++)
             {
-                rowThreads[i] = new Thread(delegate(object threadIndex) 
+                rowThreads[i] = Task.Factory.StartNew((threadIndex) =>
                 {
                     for (int j = (byte)threadIndex; j < _SolvedSudocu.Size.Height; j += rowThreads.Length)
                     {
                         if (!_RowMap[j])
                         {
-                            isChanged |= _SolveRow((byte)j);
+                            bool res = _SolveRow((byte)j);
+                            lock(lockObj)
+                            {
+                                isChanged |= res;
+                            }
                             _RowMap[j] = true;
                             ProgressEvent.BeginInvoke(null, null);
                         }
                     }
-                });
-                rowThreads[i].Start(i);
+                }, i);
             }
 
-            for (Byte i = 0; i < rowThreads.Length; i++)
-            {
-                rowThreads[i].Join();
-            }
-
-            Thread[] collThreads = new Thread[threadCount];
+            Task.WaitAll(rowThreads);
+            Task[] collThreads = new Task[threadCount];
             for (Byte i = 0; i < collThreads.Length; i++)
             {
-                collThreads[i] = new Thread(delegate(object threadIndex)
+                collThreads[i] = Task.Factory.StartNew((threadIndex) =>
                 {
                     int count = System.Math.Min(((byte)threadIndex + 1) * 10, _SolvedSudocu.Size.Width);
                     for (int j = (byte)threadIndex; j < _SolvedSudocu.Size.Width; j += collThreads.Length)
                     {
                         if (!_ColumnMap[j])
                         {
-                            isChanged |= _SolveColumn((byte)j);
+                            bool res = _SolveColumn((byte)j);
+                            lock (lockObj)
+                            {
+                                isChanged |= res;
+                            }
                             _ColumnMap[j] = true;
                             ProgressEvent.BeginInvoke(null, null);
                         }
                     }
-                });
-                collThreads[i].Start(i);
+                }, i);
             }
-            for (Byte i = 0; i < collThreads.Length; i++)
-            {
-                collThreads[i].Join();
-            }
-
+            Task.WaitAll(collThreads);
             return !isChanged; 
         }
 

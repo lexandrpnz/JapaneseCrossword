@@ -59,8 +59,6 @@ namespace Sudocu
         }
 
         //-----------------------------------------------------------------
-
-
         public void LoadSudocu(String Path)
         {
             _Sudocu = CSudocu.Load(Path);
