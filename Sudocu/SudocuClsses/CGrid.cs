@@ -1,9 +1,6 @@
 using System;
 using System.Drawing;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
-using System.Xml;
 
 namespace SudocuClsses
 {
@@ -15,12 +12,6 @@ namespace SudocuClsses
     [XmlRoot("Grid")]
     public class CGrid
     {
-        public CGrid()
-        { }
-
-        ~CGrid( )
-        { }
-
          /**
           * Размер игрового поля
           */

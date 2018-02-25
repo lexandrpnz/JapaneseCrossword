@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 
@@ -23,7 +22,7 @@ namespace SudocuClsses
         {
             set
             {
-                lock (_Locked)
+                lock (locked)
                 {
                     _List.Clear();
                     byte i;
@@ -35,7 +34,7 @@ namespace SudocuClsses
             }
             get
             {
-                lock (_Locked)
+                lock (locked)
                 {
                     return _List.ToArray();
                 }
@@ -47,7 +46,7 @@ namespace SudocuClsses
 
         public Int32 GetCount()
         {
-            lock (_Locked)
+            lock (locked)
             {
                 return _List.Count;
             }
@@ -55,7 +54,7 @@ namespace SudocuClsses
 
         public void Clear()
         { 
-            lock (_Locked)
+            lock (locked)
             {
                 _List.Clear();
             }
@@ -63,6 +62,6 @@ namespace SudocuClsses
 
 
         private List<byte> _List = new List<byte>();
-        private Object _Locked = new Object();
+        private Object locked = new Object();
     }
 }

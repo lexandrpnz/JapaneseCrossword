@@ -1,15 +1,12 @@
 using System;
-using System.ComponentModel;
-using System.Windows.Forms;
 using System.Threading;
-using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace SudocuClsses
 {
     /**
      *  ласс предназначен дл€ автоматизации решени€ €понского сканворда
      */
-    
     public class SudocuSolver
     {
         private CSudocu _SolvedSudocu = null;
