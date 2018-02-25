@@ -110,7 +110,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SudocuClsses\JCClsses.csproj">
+    <ProjectReference Include="..\JCClasses\JCClsses.csproj">
       <Project>{B8C3F2EB-2428-4C12-8C3B-70BA376B9DAC}</Project>
       <Name>JCClsses</Name>
     </ProjectReference>

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapaneseСrossword", "Sudocu\JapaneseСrossword.csproj", "{E65B7B6F-2405-4C66-9EE1-13C5ACE7ECA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Japanesecrossword", "JapaneseCrossword\JapaneseСrossword.csproj", "{E65B7B6F-2405-4C66-9EE1-13C5ACE7ECA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCClsses", "SudocuClsses\JCClsses.csproj", "{B8C3F2EB-2428-4C12-8C3B-70BA376B9DAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCClsses", "JCClasses\JCClsses.csproj", "{B8C3F2EB-2428-4C12-8C3B-70BA376B9DAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
