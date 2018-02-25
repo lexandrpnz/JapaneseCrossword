@@ -13,7 +13,7 @@ namespace SudocuClsses
     }
 
 
-    public class Math: IMath
+    public class Math : IMath
     {
         public override Byte[] CalcPositions(Byte ObjCount, Byte FreeCellCount, Int64 Var)
         {
@@ -30,7 +30,7 @@ namespace SudocuClsses
 
             Int64 tmpVar = Var;
             Byte Summposition = 0;
-            for (Byte i = 1; i < ObjCount; i++) 
+            for (Byte i = 1; i < ObjCount; i++)
             {
                 do
                 {
@@ -70,18 +70,33 @@ namespace SudocuClsses
         }
     }
 
+    public class MatchCach: XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>>
+    {}
+
     [Serializable()]
-     public class CachedMath : Math
+    public class CachedMath : Math
      {
         [XmlElement]
-        public XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>> _GetVarCache
+        public MatchCach _GetVarCache
         {get;set;}
 
         private object locObj = new object();
+        private const string filename = "MatchCach.xml";
 
+        ~CachedMath()
+        {
+            Save(filename);
+        }
         public CachedMath()
         {
-            _GetVarCache = new XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>>();
+            try
+            {
+                Load(filename);
+            }
+            catch (FileNotFoundException)
+            {
+                _GetVarCache = new MatchCach();
+            }
         }
 
         public override Int64 GetVar(Int32 ObjectCount, Int32 CellCount)
@@ -103,21 +118,21 @@ namespace SudocuClsses
                 return _GetVarCache[ObjectCount][CellCount];
             }
         }
-        public static CachedMath Load(String Path)
+        public void Load(String Path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(CachedMath));
+            XmlSerializer serializer = new XmlSerializer(typeof(MatchCach));
             using (Stream stream = new FileStream(Path, FileMode.Open))
             {
-                return (CachedMath)serializer.Deserialize(stream);
+                this._GetVarCache = (serializer.Deserialize(stream) as MatchCach);
             }
         }
 
-        public void SaveCache(string path)
+        public void Save(string path)
         {
-            XmlSerializer Serializer = new XmlSerializer(typeof(CachedMath));
+            XmlSerializer Serializer = new XmlSerializer(typeof(MatchCach));
             Stream stream = new FileStream(path, FileMode.Create);
 
-            Serializer.Serialize(stream, this, new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty) }));
+            Serializer.Serialize(stream, this._GetVarCache, new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty) }));
             stream.Close();
         }
 
