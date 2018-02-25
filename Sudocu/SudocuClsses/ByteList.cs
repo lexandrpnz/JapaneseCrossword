@@ -22,7 +22,7 @@ namespace SudocuClsses
         {
             set
             {
-                lock (locked)
+                lock (lockObj)
                 {
                     _List.Clear();
                     byte i;
@@ -34,7 +34,7 @@ namespace SudocuClsses
             }
             get
             {
-                lock (locked)
+                lock (lockObj)
                 {
                     return _List.ToArray();
                 }
@@ -46,7 +46,7 @@ namespace SudocuClsses
 
         public Int32 GetCount()
         {
-            lock (locked)
+            lock (lockObj)
             {
                 return _List.Count;
             }
@@ -54,7 +54,7 @@ namespace SudocuClsses
 
         public void Clear()
         { 
-            lock (locked)
+            lock (lockObj)
             {
                 _List.Clear();
             }
@@ -62,6 +62,6 @@ namespace SudocuClsses
 
 
         private List<byte> _List = new List<byte>();
-        private Object locked = new Object();
+        private Object lockObj = new Object();
     }
 }

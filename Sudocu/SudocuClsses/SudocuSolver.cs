@@ -12,7 +12,9 @@ namespace SudocuClsses
         private CSudocu _SolvedSudocu = null;
         private bool[] _RowMap;
         private bool[] _ColumnMap;
+        private int threadCount = 1;
         private IMath Math = new Math();
+
 
         /**
          * Делегат вызывается при каждой новой итерации нахождения решения
@@ -49,7 +51,6 @@ namespace SudocuClsses
 
                 tick = System.DateTime.Now.ToBinary() - tick;
                 DateTime Time = new System.DateTime(tick);
- 
 
                 string smessage = "Кроссворд решен\n";
                 smessage += "Затрачено времени: ";
@@ -81,7 +82,7 @@ namespace SudocuClsses
         private bool _SolveIter()
         {
             bool isChanged = false;
-            Thread[] rowThreads = new Thread[5];
+            Thread[] rowThreads = new Thread[threadCount];
             for (Byte i = 0; i < rowThreads.Length; i++)
             {
                 rowThreads[i] = new Thread(delegate(object threadIndex) 
@@ -104,7 +105,7 @@ namespace SudocuClsses
                 rowThreads[i].Join();
             }
 
-            Thread[] collThreads = new Thread[5];
+            Thread[] collThreads = new Thread[threadCount];
             for (Byte i = 0; i < collThreads.Length; i++)
             {
                 collThreads[i] = new Thread(delegate(object threadIndex)

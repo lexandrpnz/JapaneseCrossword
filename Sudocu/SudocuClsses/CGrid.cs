@@ -19,14 +19,14 @@ namespace SudocuClsses
         {
             get
             {
-                lock (lockeObj)
+                lock (lockObj)
                 {
                     return m_Size;
                 }
             }
             set
             {
-                lock (lockeObj)
+                lock (lockObj)
                 {
                     m_Size = value;
                     m_pGrid = new Byte[m_Size.Width * m_Size.Height];
@@ -62,14 +62,14 @@ namespace SudocuClsses
         {
             get
             {
-                lock (lockeObj)
+                lock (lockObj)
                 {
                     return m_pGrid; 
                 }
             }
             set
             {
-                lock (lockeObj)
+                lock (lockObj)
                 {
                     m_pGrid = value;
                 }
@@ -90,6 +90,6 @@ namespace SudocuClsses
 
         private Size	m_Size;
  	    private Byte[]	m_pGrid;
-        private Object lockeObj = new Object();
+        private Object lockObj = new Object();
     }
 }

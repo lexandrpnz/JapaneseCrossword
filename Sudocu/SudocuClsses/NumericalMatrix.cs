@@ -21,7 +21,7 @@ namespace SudocuClsses
 
         public Int32 GetMaxCount()
         {
-            lock (_Locked)
+            lock (lockObj)
             {
                 int i;
                 Int32 ret = 1;
@@ -33,6 +33,6 @@ namespace SudocuClsses
                 return ret;
             }
         }
-        private Object _Locked = new Object();
+        private Object lockObj = new Object();
     }
 }

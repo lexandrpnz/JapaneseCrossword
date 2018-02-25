@@ -77,7 +77,7 @@ namespace SudocuClsses
         public XmlSerializableDictionary<Int32, XmlSerializableDictionary<Int32, Int64>> _GetVarCache
         {get;set;}
 
-        private object _locObject = new object();
+        private object locObj = new object();
 
         public CachedMath()
         {
@@ -86,7 +86,7 @@ namespace SudocuClsses
 
         public override Int64 GetVar(Int32 ObjectCount, Int32 CellCount)
         {
-            lock(_locObject)
+            lock(locObj)
             {
                 try
                 {

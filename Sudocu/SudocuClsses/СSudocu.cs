@@ -28,7 +28,7 @@ namespace SudocuClsses
         {
             get
             {
-                lock (locket)
+                lock (lockObj)
                 {
                     return verticalMatrix;
                 }
@@ -43,7 +43,7 @@ namespace SudocuClsses
         {
             get
             {
-                lock (locket)
+                lock (lockObj)
                 {
                     return horizontalMatrix;
                 }
@@ -56,7 +56,7 @@ namespace SudocuClsses
          */
         public void SetSize(byte Width,byte Height)
         {
-            lock (locket)
+            lock (lockObj)
             {
                 this.Size = new Size(Width, Height);
                 verticalMatrix.Clear();
@@ -86,7 +86,7 @@ namespace SudocuClsses
 
         public void Save(String Path)
         {
-            lock (locket)
+            lock (lockObj)
             {
                 XmlSerializer Serializer = new XmlSerializer(typeof(CSudocu));
                 Stream stream = new FileStream(Path, FileMode.Create);
@@ -99,6 +99,6 @@ namespace SudocuClsses
 
         private NumericalMatrix verticalMatrix = new NumericalMatrix();
         private NumericalMatrix horizontalMatrix = new NumericalMatrix();
-        private Object locket = new Object();
+        private Object lockObj = new Object();
     }
 }
