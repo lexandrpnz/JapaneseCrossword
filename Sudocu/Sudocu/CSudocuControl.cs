@@ -28,7 +28,7 @@ namespace Sudocu
             // (если я все правильно понимаю)
             // 
             SudocuSolver Solver = new SudocuSolver();
-            Solver.ProgressEvent += new SudocuSolver.UpdateProgressEvent(RefreshProgress);
+            Solver.ProgressEvent += RefreshProgress;
             Solver.DoSolve(_Sudocu);
         }
 
