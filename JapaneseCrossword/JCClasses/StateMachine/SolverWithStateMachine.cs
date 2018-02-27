@@ -125,7 +125,7 @@ namespace JCClasses
             {
                 return false;
             }
-            return stateMachine.EndState == stateMachine.CurrentState;
+            return stateMachine.IsEnd();
         }
     }
 }
