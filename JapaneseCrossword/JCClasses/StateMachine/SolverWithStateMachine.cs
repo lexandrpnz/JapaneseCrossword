@@ -23,6 +23,7 @@ namespace JCClasses
             }
             return FreeCellSize;
         }
+
         private StateMachine<Int32, byte> CreateStateMachine(Byte[] data)
         {
             StateMachine<Int32, byte> ret = new StateMachine<Int32, byte>();
@@ -111,6 +112,7 @@ namespace JCClasses
             }
             return Check(data, row, stateMachine);
         }
+
         private bool Check(Byte[] data, Byte[] row, StateMachine<Int32, byte> stateMachine)
         {
             stateMachine.CurrentState = 0;
