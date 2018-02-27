@@ -59,6 +59,7 @@ namespace JCClasses
 
         private bool Attempt(Byte[] row, Byte[] data)
         {
+            StateMachine<Int32, byte> stateMachine = CreateStateMachine(data);
             bool ret = false;
             for (int i = 0; i < row.Length; i++)
             {
@@ -68,9 +69,9 @@ namespace JCClasses
                 }
 
                 row[i] = 1;
-                bool isBlock = IsFill(row, data);
+                bool isBlock = IsFill( row, data, 0, stateMachine);
                 row[i] = 100;
-                bool isBan = IsFill( row, data);
+                bool isBan = IsFill( row, data, 0, stateMachine);
                 row[i] = 0;
 
                 if (!(isBan ^ isBlock))
@@ -92,9 +93,9 @@ namespace JCClasses
             return ret;
         }
 
-        private bool IsFill(Byte[] row, Byte[] data)
+        private bool IsFill(Byte[] row, Byte[] data, int next,  StateMachine<Int32, byte> stateMachine)
         {
-            for (int i = 0; i < row.Length; i++)
+            for (int i = next; i < row.Length; i++)
             {
                 if (0 != row[i])
                 {
@@ -102,29 +103,29 @@ namespace JCClasses
                 }
 
                 row[i] = 1;
-                bool isBlock = IsFill(row, data);
+                bool isBlock = IsFill(row, data, i+1, stateMachine);
                 row[i] = 100;
-                bool isBan = IsFill(row, data);
+                bool isBan = IsFill(row, data, i+1, stateMachine);
                 row[i] = 0;
                 return isBan || isBlock;
             }
-            return Check(data, row);
+            return Check(data, row, stateMachine);
         }
-        private bool Check(Byte[] data, Byte[] row)
+        private bool Check(Byte[] data, Byte[] row, StateMachine<Int32, byte> stateMachine)
         {
-            StateMachine<Int32, byte> res = CreateStateMachine(data);
+            stateMachine.CurrentState = 0;
             try
             {
                 foreach (var current in row)
                 {
-                    res.Next(current);
+                    stateMachine.Next(current);
                 }
             }
             catch (System.Exception)
             {
                 return false;
             }
-            return res.EndState == res.CurrentState;
+            return stateMachine.EndState == stateMachine.CurrentState;
         }
     }
 }

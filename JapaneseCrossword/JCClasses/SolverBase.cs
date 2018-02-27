@@ -13,7 +13,7 @@ namespace JCClasses
         private Crossword solvedSudocu { get; set; }
         private bool[] RowChanged { get; set; }
         private bool[] ColumnChanged { get; set; }
-        private int threadCount = 5;
+        private int threadCount = 1;
 
         protected abstract bool Solvered(Byte[] Row, Byte[] Data);
 
