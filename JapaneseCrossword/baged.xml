@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Sudocu>
+  <Size>
+    <Width>5</Width>
+    <Height>5</Height>
+  </Size>
+  <value>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</value>
+  <Vertical>
+    <ByteList>
+      <B>AgI=</B>
+    </ByteList>
+    <ByteList>
+      <B>AgI=</B>
+    </ByteList>
+    <ByteList>
+      <B />
+    </ByteList>
+    <ByteList>
+      <B>AQE=</B>
+    </ByteList>
+    <ByteList>
+      <B>Aw==</B>
+    </ByteList>
+  </Vertical>
+  <Horizontal>
+    <ByteList>
+      <B>AgE=</B>
+    </ByteList>
+    <ByteList>
+      <B>AgE=</B>
+    </ByteList>
+    <ByteList>
+      <B>AQ==</B>
+    </ByteList>
+    <ByteList>
+      <B>AgE=</B>
+    </ByteList>
+    <ByteList>
+      <B>AgE=</B>
+    </ByteList>
+  </Horizontal>
+</Sudocu>

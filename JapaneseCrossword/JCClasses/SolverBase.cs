@@ -122,6 +122,10 @@ namespace JCClasses
 
         private bool SolveRow(Byte Index)
         {
+            if (0 == solvedSudocu.Vertical[Index].list.Length)
+            {
+                return false;
+            }
             Byte[] row = new Byte[solvedSudocu.Size.Width];
 
             for (Byte i = 0; i < solvedSudocu.Size.Width; i++)
@@ -144,6 +148,10 @@ namespace JCClasses
 
         private bool SolveColumn(Byte Index)
         {
+            if(0 == solvedSudocu.Horizontal[Index].list.Length)
+            {
+                return false;
+            }
             Byte[] row = new Byte[solvedSudocu.Size.Height];
 
             for (Byte i = 0; i < solvedSudocu.Size.Height; i++)
