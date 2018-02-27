@@ -31,19 +31,29 @@ namespace JCClasses
             ret.Add(currentState, 1, currentState + 1);
             currentState++;
 
-            foreach (var current in data)
+            for (byte dataIndex = 0; dataIndex < data.Length-1; dataIndex++)
             {
-                for (byte cell = 1; cell < current; cell++)
+                byte current = data[dataIndex];
+                for (byte cell = 0; cell < current; cell++)
                 {
-                    ret.Add(currentState, cell == current ? (byte)100 : (byte)1, currentState + 1);
+                    ret.Add(currentState, cell == current-1 ? (byte)100 : (byte)1, currentState + 1);
                     currentState++;
                 }
                 ret.Add(currentState, 100, currentState);
                 ret.Add(currentState, 1, currentState + 1);
                 currentState++;
             }
+
+            byte last = data[data.Length - 1];
+            for (byte cell = 1; cell < last; cell++)
+            {
+                ret.Add(currentState, 1, currentState + 1);
+                currentState++;
+            }
+            ret.Add(currentState, 100, currentState);
+
             ret.CurrentState = 0;
-            ret.EndState = currentState - 1;
+            ret.EndState = currentState;
             return ret;
         }
 
