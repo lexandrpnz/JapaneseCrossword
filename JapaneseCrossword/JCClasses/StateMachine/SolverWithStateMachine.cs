@@ -85,7 +85,7 @@ namespace JCClasses
         private bool IsFill(Byte[] row, Byte[] data)
         {
             StateMachine<Int32, byte> stateMachine = CreateStateMachine(data);
-            List<Int32> stateCollection = new List<Int32>();
+            HashSet<Int32> stateCollection = new HashSet<Int32>();
 
             stateCollection.Add(stateMachine.CurrentState);
 
@@ -100,19 +100,18 @@ namespace JCClasses
             return IsEnd(stateMachine, stateCollection);
         }
 
-        private List<Int32> Check(Byte next, StateMachine<Int32, byte> stateMachine, List<Int32> stateCollection)
+        private HashSet<Int32> Check(Byte next, StateMachine<Int32, byte> stateMachine, HashSet<Int32> stateCollection)
         {
-            List<Int32> resultStates = new List<Int32>(stateCollection);
+            HashSet<Int32> resultStates = new HashSet<Int32>();
             foreach (Int32 currentstate in stateCollection)
             {
                 stateMachine.CurrentState = currentstate;
-                resultStates.Remove(currentstate);
                 try
                 {
                     if (0 == next)
                     {
                         ICollection<Int32> nextStates = stateMachine.GetNext();
-                        resultStates.AddRange(nextStates);
+                        resultStates.UnionWith(nextStates);
                     }
                     else
                     {
@@ -125,11 +124,10 @@ namespace JCClasses
                 }
             }
 
-            resultStates = new List<Int32>(new HashSet<Int32>(resultStates));
             return resultStates;
         }
 
-        private bool IsEnd(StateMachine<Int32, byte> stateMachine, List<Int32> stateCollection)
+        private bool IsEnd(StateMachine<Int32, byte> stateMachine, HashSet<Int32> stateCollection)
         {
             foreach (Int32 currentstate in stateCollection)
             {
