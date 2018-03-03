@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace JCClasses
@@ -9,19 +10,7 @@ namespace JCClasses
 
         protected override bool Solvered(Byte[] row, Byte[] data)
         {
-            Byte FreeCellSize = CalcFreeCellSize((Byte)row.Length, data);
             return Attempt(row, data);
-        }
-
-        private Byte CalcFreeCellSize(Byte RowCount, Byte[] Data)
-        {
-            Byte FreeCellSize = (Byte)RowCount;
-            FreeCellSize -= (Byte)(Data.Length - 1);
-            for (Int32 i = 0; i < Data.Length; i++)
-            {
-                FreeCellSize -= Data[i];
-            }
-            return FreeCellSize;
         }
 
         private StateMachine<Int32, byte> CreateStateMachine(Byte[] data)
@@ -60,7 +49,6 @@ namespace JCClasses
 
         private bool Attempt(Byte[] row, Byte[] data)
         {
-            StateMachine<Int32, byte> stateMachine = CreateStateMachine(data);
             bool ret = false;
             for (int i = 0; i < row.Length; i++)
             {
@@ -70,9 +58,9 @@ namespace JCClasses
                 }
 
                 row[i] = 1;
-                bool isBlock = IsFill( row, data, 0, stateMachine);
+                bool isBlock = IsFill( row, data );
                 row[i] = 100;
-                bool isBan = IsFill( row, data, 0, stateMachine);
+                bool isBan = IsFill( row, data );
                 row[i] = 0;
 
                 if (!(isBan ^ isBlock))
@@ -94,40 +82,65 @@ namespace JCClasses
             return ret;
         }
 
-        private bool IsFill(Byte[] row, Byte[] data, int next,  StateMachine<Int32, byte> stateMachine)
+        private bool IsFill(Byte[] row, Byte[] data)
         {
-            for (int i = next; i < row.Length; i++)
+            StateMachine<Int32, byte> stateMachine = CreateStateMachine(data);
+            List<Int32> stateCollection = new List<Int32>();
+
+            stateCollection.Add(stateMachine.CurrentState);
+
+            foreach (var next in row)
             {
-                if (0 != row[i])
+                stateCollection = Check(next, stateMachine, stateCollection);
+                if(0 == stateCollection.Count)
+                {
+                    return false;
+                }
+            }
+            return IsEnd(stateMachine, stateCollection);
+        }
+
+        private List<Int32> Check(Byte next, StateMachine<Int32, byte> stateMachine, List<Int32> stateCollection)
+        {
+            List<Int32> resultStates = new List<Int32>(stateCollection);
+            foreach (Int32 currentstate in stateCollection)
+            {
+                stateMachine.CurrentState = currentstate;
+                resultStates.Remove(currentstate);
+                try
+                {
+                    if (0 == next)
+                    {
+                        ICollection<Int32> nextStates = stateMachine.GetNext();
+                        resultStates.AddRange(nextStates);
+                    }
+                    else
+                    {
+                        resultStates.Add(stateMachine.Next(next));
+                    }
+                }
+                catch (System.Exception)
                 {
                     continue;
                 }
-
-                row[i] = 1;
-                bool isBlock = IsFill(row, data, i+1, stateMachine);
-                row[i] = 100;
-                bool isBan = IsFill(row, data, i+1, stateMachine);
-                row[i] = 0;
-                return isBan || isBlock;
             }
-            return Check(data, row, stateMachine);
+
+            resultStates = new List<Int32>(new HashSet<Int32>(resultStates));
+            return resultStates;
         }
 
-        private bool Check(Byte[] data, Byte[] row, StateMachine<Int32, byte> stateMachine)
+        private bool IsEnd(StateMachine<Int32, byte> stateMachine, List<Int32> stateCollection)
         {
-            stateMachine.CurrentState = 0;
-            try
+            foreach (Int32 currentstate in stateCollection)
             {
-                foreach (var current in row)
+                stateMachine.CurrentState = currentstate;
+                if (stateMachine.IsEnd())
                 {
-                    stateMachine.Next(current);
+                    return true;
                 }
             }
-            catch (System.Exception)
-            {
-                return false;
-            }
-            return stateMachine.IsEnd();
+            return false;
         }
+
     }
 }

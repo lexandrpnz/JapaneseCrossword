@@ -9,6 +9,11 @@ namespace JCClasses
             return transitions[command];
         }
 
+        public ICollection<TState> GetNext()
+        {
+            return transitions.Values;
+        }
+
         public void AddTransitions(TCommand command, TState state)
         {
             transitions.Add(command, state);

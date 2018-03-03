@@ -11,6 +11,11 @@ namespace JCClasses
             return CurrentState;
         }
 
+        public ICollection<TState> GetNext()
+        {
+            return states[CurrentState].GetNext();
+        }
+
         public bool IsEnd()
         {
             return 0 == CurrentState.CompareTo(EndState);
